@@ -2,6 +2,6 @@
 
 import {Meteor} from 'meteor/meteor';
 
-Meteor.startup(() => {
+import "/imports/api/manga/server/publications"
 
-});
+import "/imports/api/manga/methods"

@@ -8,8 +8,7 @@ export default class MainLayout extends Component {
             <MuiThemeProvider>
                 <div>
                     <AppBar
-                        title="Title"
-                        iconClassNameRight="muidocs-icon-navigation-expand-more"
+                        title="Manga Parser"
                     />
                     <main>
                         { this.props.content({...this.props}) }
