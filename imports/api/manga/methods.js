@@ -5,8 +5,8 @@ import {Manga} from "./manga_collection";
 export const add_manga = new ValidatedMethod({
     name: "Manga.add_manga",
     validate: null,
-    run({url}) {
-        Manga.insert({url});
+    run({name, url}) {
+        Manga.insert({name, url});
     }
 });
 

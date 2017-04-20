@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
+import FontIcon from 'material-ui/FontIcon';
+import MangaForm from "../components/MangaForm"
 import {add_manga, refresh_all} from "/imports/api/manga/methods"
 
 const size = 180;
@@ -11,8 +13,18 @@ const style = {
 };
 
 export default class HomePage extends Component {
-    handleClick() {
-        add_manga.call({url: 'test'})
+    constructor() {
+        super();
+
+        this.state = {
+            open: false
+        };
+
+        this.modalHandle = this.modalHandle.bind(this);
+    }
+
+    modalHandle(open) {
+        this.setState({open})
     }
 
     refresh() {
@@ -22,27 +34,36 @@ export default class HomePage extends Component {
     render() {
         const {ready, manga} = this.props;
 
+        console.log(manga);
+        const rows = manga.map((doc, index) => (
+            <TableRow>
+                <TableRowColumn>{index + 1}</TableRowColumn>
+                <TableRowColumn>{doc.name}</TableRowColumn>
+                <TableRowColumn>
+                    {doc.seen ? <FontIcon className="material-icons">done</FontIcon> : <FontIcon className="material-icons material-icons-clear">clear</FontIcon>}
+                </TableRowColumn>
+            </TableRow>
+        ))
+
         return (
             <div className="home-container">
                 {!ready ? (<CircularProgress size={size} thickness={5} style={style}/>) : (
                     <div>
-                        <RaisedButton label="Add manga" primary={true} onClick={this.handleClick}/>
+                        <RaisedButton label="Add manga" primary={true} onClick={() => this.modalHandle(true)}/>
                         <RaisedButton label="Refresh" primary={true} onClick={this.refresh}/>
+
+                        <MangaForm open={this.state.open} modalHandle={this.modalHandle}/>
 
                         <Table>
                             <TableHeader>
                                 <TableRow>
                                     <TableHeaderColumn>ID</TableHeaderColumn>
                                     <TableHeaderColumn>Name</TableHeaderColumn>
-                                    <TableHeaderColumn>Status</TableHeaderColumn>
+                                    <TableHeaderColumn>Seen</TableHeaderColumn>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                <TableRow>
-                                    <TableRowColumn>1</TableRowColumn>
-                                    <TableRowColumn>John Smith</TableRowColumn>
-                                    <TableRowColumn>Employed</TableRowColumn>
-                                </TableRow>
+                                {rows}
                             </TableBody>
                         </Table>
                     </div>
