@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
-import {add_manga} from "/imports/api/manga/methods"
+import {add_manga, refresh_all} from "/imports/api/manga/methods"
 
 const size = 180;
 
@@ -15,6 +15,10 @@ export default class HomePage extends Component {
         add_manga.call({url: 'test'})
     }
 
+    refresh() {
+        refresh_all.call();
+    }
+
     render() {
         const {ready, manga} = this.props;
 
@@ -23,6 +27,7 @@ export default class HomePage extends Component {
                 {!ready ? (<CircularProgress size={size} thickness={5} style={style}/>) : (
                     <div>
                         <RaisedButton label="Add manga" primary={true} onClick={this.handleClick}/>
+                        <RaisedButton label="Refresh" primary={true} onClick={this.refresh}/>
 
                         <Table>
                             <TableHeader>
