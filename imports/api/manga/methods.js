@@ -6,7 +6,11 @@ export const add_manga = new ValidatedMethod({
     name: "Manga.add_manga",
     validate: null,
     run({name, url}) {
-        Manga.insert({name, url});
+        const id = Manga.insert({name, url});
+
+        if (Meteor.isServer) {
+            Manga.findOne(id).parse();
+        }
     }
 });
 
@@ -25,4 +29,14 @@ export const refresh_all = new ValidatedMethod({
             })
         }
     }
+});
+
+export const mark_seen = new ValidatedMethod({
+    name: "Manga.mark_seen",
+    validate: null,
+
+    run({id}) {
+        Manga.update({_id: id}, {$set: {seen: true}})
+    }
+
 })

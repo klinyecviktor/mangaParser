@@ -4,7 +4,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import MangaForm from "../components/MangaForm"
-import {add_manga, refresh_all} from "/imports/api/manga/methods"
+import {add_manga, refresh_all, mark_seen} from "/imports/api/manga/methods"
 
 const size = 180;
 
@@ -37,11 +37,16 @@ export default class HomePage extends Component {
         console.log(manga);
         const rows = manga.map((doc, index) => (
             <TableRow key={index}>
-                <TableRowColumn>{index + 1}</TableRowColumn>
-                <TableRowColumn><a className="name-url" href={doc.url} target="_blank">{doc.name}</a></TableRowColumn>
-                <TableRowColumn>
+                <TableRowColumn className="first-column"><a className="name-url" href={doc.url} target="_blank">{doc.name}</a></TableRowColumn>
+                <TableRowColumn className="second-column">{moment(doc.lastUpdate).format("D MMMM YYYY")}</TableRowColumn>
+                <TableRowColumn className="third-column">
                     {doc.seen ? <FontIcon className="material-icons">done</FontIcon>
-                        : <FontIcon className="material-icons material-icons-clear">clear</FontIcon>}
+                        : <FontIcon className="material-icons material-icons-clear"
+                                    onClick={() => mark_seen.call({id: doc._id})}>clear</FontIcon>}
+                </TableRowColumn>
+                <TableRowColumn className="fourth-column">
+                    <FontIcon
+                        className="material-icons material-icons-clear">delete</FontIcon>
                 </TableRowColumn>
             </TableRow>
         ));
@@ -53,17 +58,19 @@ export default class HomePage extends Component {
                         <RaisedButton label="Add manga" primary={true} onClick={() => this.modalHandle(true)}/>
                         <RaisedButton label="Refresh" primary={true} onClick={this.refresh}/>
 
-                        <MangaForm open={this.state.open} modalHandle={this.modalHandle}/>
+                        {this.state.open && <MangaForm modalHandle={this.modalHandle}/>}
 
-                        <Table>
-                            <TableHeader>
+                        <Table selectable={false}>
+                            <TableHeader displaySelectAll={false}
+                                         adjustForCheckbox={false}>
                                 <TableRow>
-                                    <TableHeaderColumn>№</TableHeaderColumn>
-                                    <TableHeaderColumn>Name</TableHeaderColumn>
-                                    <TableHeaderColumn>Seen</TableHeaderColumn>
+                                    <TableHeaderColumn className="first-column">Name</TableHeaderColumn>
+                                    <TableHeaderColumn className="second-column">Date</TableHeaderColumn>
+                                    <TableHeaderColumn className="third-column">Seen</TableHeaderColumn>
+                                    <TableHeaderColumn className="fourth-column">Remove</TableHeaderColumn>
                                 </TableRow>
                             </TableHeader>
-                            <TableBody>
+                            <TableBody displayRowCheckbox={false}>
                                 {rows}
                             </TableBody>
                         </Table>

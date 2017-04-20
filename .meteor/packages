@@ -29,3 +29,5 @@ mdg:validated-method
 aldeed:collection2
 react-meteor-data
 dburles:collection-helpers
+momentjs:moment
+session

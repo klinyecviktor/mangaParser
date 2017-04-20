@@ -15,3 +15,14 @@ body {
   color: #00bcd4;
   font-size: 16px;
 }
+
+.first-column {
+  width: 35%;
+}
+
+.first-column,
+.second-column,
+.third-column,
+.fourth-column {
+  text-align: center !important;
+}

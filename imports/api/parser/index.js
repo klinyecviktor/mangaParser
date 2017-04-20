@@ -20,7 +20,9 @@ const yesterday = () => {
     return date;
 };
 
-const requestOptions = {};
+const requestOptions = {
+    timeout: 5000
+};
 
 export const parser = (url) => {
     const type = /mangafox/.test(url) ? 1 :

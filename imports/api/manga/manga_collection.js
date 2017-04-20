@@ -32,6 +32,7 @@ Manga.helpers({
 
                             resolve();
                         });
+                    else resolve()
 
                 }).catch((err) => {
                     reject(`${manga.name}, ${err}`);
@@ -39,4 +40,4 @@ Manga.helpers({
             });
         }
     }
-})
+});

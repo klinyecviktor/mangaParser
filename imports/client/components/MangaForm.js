@@ -81,7 +81,7 @@ export default class MangaForm extends Component {
             <Dialog
                 title="Add Manga"
                 actions={actions}
-                open={open}
+                open={true}
                 onRequestClose={modalHandle}
                 autoScrollBodyContent={true}
                 contentStyle={customContentStyle}
