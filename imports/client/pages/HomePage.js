@@ -36,14 +36,15 @@ export default class HomePage extends Component {
 
         console.log(manga);
         const rows = manga.map((doc, index) => (
-            <TableRow>
+            <TableRow key={index}>
                 <TableRowColumn>{index + 1}</TableRowColumn>
-                <TableRowColumn>{doc.name}</TableRowColumn>
+                <TableRowColumn><a className="name-url" href={doc.url} target="_blank">{doc.name}</a></TableRowColumn>
                 <TableRowColumn>
-                    {doc.seen ? <FontIcon className="material-icons">done</FontIcon> : <FontIcon className="material-icons material-icons-clear">clear</FontIcon>}
+                    {doc.seen ? <FontIcon className="material-icons">done</FontIcon>
+                        : <FontIcon className="material-icons material-icons-clear">clear</FontIcon>}
                 </TableRowColumn>
             </TableRow>
-        ))
+        ));
 
         return (
             <div className="home-container">
@@ -57,7 +58,7 @@ export default class HomePage extends Component {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHeaderColumn>ID</TableHeaderColumn>
+                                    <TableHeaderColumn>№</TableHeaderColumn>
                                     <TableHeaderColumn>Name</TableHeaderColumn>
                                     <TableHeaderColumn>Seen</TableHeaderColumn>
                                 </TableRow>
