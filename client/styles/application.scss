@@ -17,7 +17,7 @@ body {
 }
 
 .first-column {
-  width: 35%;
+  width: 45%;
 }
 
 .first-column,
@@ -25,4 +25,26 @@ body {
 .third-column,
 .fourth-column {
   text-align: center !important;
+}
+
+.snackbar {
+  position: fixed;
+  bottom: 0;
+  left: calc(50% - 150px);
+  width: 300px;
+  height: 48px;
+  line-height: 48px;
+  background: rgba(0, 0, 0, 0.87);
+  color: #fff;
+  font-family: Roboto, sans-serif;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  transition: bottom 0.5s ease;
+  &.hide {
+    bottom: -48px;
+  }
+}
+
+.btn {
+  margin: 15px 40px;
 }

@@ -51,8 +51,10 @@ export default class HomePage extends Component {
 
         const rows = manga.map((doc, index) => (
             <TableRow key={index}>
-                <TableRowColumn className="first-column"><a className="name-url" href={doc.url} target="_blank">{doc.name}</a></TableRowColumn>
-                <TableRowColumn className="second-column">{moment(doc.lastUpdate).format("D MMMM YYYY")}</TableRowColumn>
+                <TableRowColumn className="first-column"><a className="name-url" href={doc.url}
+                                                            target="_blank">{doc.name}</a></TableRowColumn>
+                <TableRowColumn
+                    className="second-column">{moment(doc.lastUpdate).format("D MMMM YYYY")}</TableRowColumn>
                 <TableRowColumn className="third-column">
                     {doc.seen ? <FontIcon className="material-icons">done</FontIcon>
                         : <FontIcon className="material-icons material-icons-clear"
@@ -70,16 +72,14 @@ export default class HomePage extends Component {
             <div className="home-container">
                 {!ready ? (<CircularProgress size={size} thickness={5} style={style}/>) : (
                     <div>
-                        <RaisedButton label="Add manga" primary={true} onClick={() => this.modalHandle(true)}/>
-                        <RaisedButton label="Refresh" primary={true} onClick={this.refresh}/>
+                        <RaisedButton className="btn" label="Add manga" primary={true}
+                                      onClick={() => this.modalHandle(true)}/>
+                        <RaisedButton className="btn" label="Refresh" primary={true} onClick={this.refresh}/>
 
                         {this.state.open && <MangaForm modalHandle={this.modalHandle}/>}
-                        {`Manga Parsed: ${parsed.parsed} / ${parsed.count}`}
-                        <Snackbar
-                            open={this.state.snackbarOpen}
-                            message={`Manga Parsed: ${parsed.parsed} / ${parsed.count}`}
-                            onRequestClose={() => null}
-                        />
+
+                        <div
+                            className={`snackbar ${!this.state.snackbarOpen && 'hide'}`}>{`Manga Parsed: ${parsed.parsed} / ${parsed.count}`}</div>
 
                         <Table selectable={false}>
                             <TableHeader displaySelectAll={false}
@@ -91,7 +91,8 @@ export default class HomePage extends Component {
                                     <TableHeaderColumn className="fourth-column">Remove</TableHeaderColumn>
                                 </TableRow>
                             </TableHeader>
-                            <TableBody displayRowCheckbox={false}>
+                            <TableBody stripedRows={true}
+                                displayRowCheckbox={false}>
                                 {rows}
                             </TableBody>
                         </Table>
