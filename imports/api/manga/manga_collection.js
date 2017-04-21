@@ -1,6 +1,7 @@
 import {Mongo} from "meteor/mongo";
 import {SimpleSchema} from "meteor/aldeed:simple-schema";
 import {parser} from "/imports/api/parser"
+import {ParsedData} from "/imports/api/parsedData/parsedData_collection"
 
 export const Manga = new Mongo.Collection('manga');
 
@@ -18,9 +19,10 @@ Manga.helpers({
         if (Meteor.isServer) {
             const manga = Manga.findOne({_id: this._id});
 
-
             return new Promise((resolve, reject) => {
                 parser(manga.url).then((resultDate) => {
+                    ParsedData.update({category: 'manga'}, {$inc: {parsed: 1}});
+
                     if (resultDate > manga.lastUpdate)
                         Manga.update({_id: manga._id}, {
                             $set: {
@@ -35,6 +37,8 @@ Manga.helpers({
                     else resolve()
 
                 }).catch((err) => {
+                    ParsedData.update({category: 'manga'}, {$inc: {parsed: 1}});
+
                     reject(`${manga.name}, ${err}`);
                 })
             });

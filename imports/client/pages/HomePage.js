@@ -3,8 +3,9 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
+import Snackbar from 'material-ui/Snackbar';
 import MangaForm from "../components/MangaForm"
-import {add_manga, refresh_all, mark_seen} from "/imports/api/manga/methods"
+import {refresh_all, mark_seen, remove} from "/imports/api/manga/methods"
 
 const size = 180;
 
@@ -17,10 +18,19 @@ export default class HomePage extends Component {
         super();
 
         this.state = {
-            open: false
+            open: false,
+            snackbarOpen: false
         };
 
         this.modalHandle = this.modalHandle.bind(this);
+        this.refresh = this.refresh.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const {parsed} = nextProps;
+
+        if (parsed && parsed.parsed === parsed.count && this.state.snackbarOpen)
+            setTimeout(() => this.setState({snackbarOpen: false}), 1500);
     }
 
     modalHandle(open) {
@@ -28,13 +38,17 @@ export default class HomePage extends Component {
     }
 
     refresh() {
+        this.setState({snackbarOpen: true});
+
         refresh_all.call();
     }
 
     render() {
-        const {ready, manga} = this.props;
+        const {ready, manga, parsed} = this.props;
 
-        console.log(manga);
+        console.log('manga', manga);
+        console.log('parsed', parsed);
+
         const rows = manga.map((doc, index) => (
             <TableRow key={index}>
                 <TableRowColumn className="first-column"><a className="name-url" href={doc.url} target="_blank">{doc.name}</a></TableRowColumn>
@@ -46,7 +60,8 @@ export default class HomePage extends Component {
                 </TableRowColumn>
                 <TableRowColumn className="fourth-column">
                     <FontIcon
-                        className="material-icons material-icons-clear">delete</FontIcon>
+                        className="material-icons material-icons-clear"
+                        onClick={() => remove.call({id: doc._id})}>delete</FontIcon>
                 </TableRowColumn>
             </TableRow>
         ));
@@ -59,6 +74,12 @@ export default class HomePage extends Component {
                         <RaisedButton label="Refresh" primary={true} onClick={this.refresh}/>
 
                         {this.state.open && <MangaForm modalHandle={this.modalHandle}/>}
+                        {`Manga Parsed: ${parsed.parsed} / ${parsed.count}`}
+                        <Snackbar
+                            open={this.state.snackbarOpen}
+                            message={`Manga Parsed: ${parsed.parsed} / ${parsed.count}`}
+                            onRequestClose={() => null}
+                        />
 
                         <Table selectable={false}>
                             <TableHeader displaySelectAll={false}
