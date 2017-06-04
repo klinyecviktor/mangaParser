@@ -13,6 +13,8 @@ const style = {
     marginTop: `calc(50vh - 64px - ${size / 2}px)`
 };
 
+const isMobileDevice = () => (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+
 export default class HomePage extends Component {
     constructor() {
         super();
@@ -60,11 +62,11 @@ export default class HomePage extends Component {
                         : <FontIcon className="material-icons material-icons-clear"
                                     onClick={() => mark_seen.call({id: doc._id})}>clear</FontIcon>}
                 </TableRowColumn>
-                <TableRowColumn className="fourth-column">
+                {!isMobileDevice() && <TableRowColumn className="fourth-column">
                     <FontIcon
                         className="material-icons material-icons-clear"
                         onClick={() => remove.call({id: doc._id})}>delete</FontIcon>
-                </TableRowColumn>
+                </TableRowColumn>}
             </TableRow>
         ));
 
@@ -79,7 +81,10 @@ export default class HomePage extends Component {
                         {this.state.open && <MangaForm modalHandle={this.modalHandle}/>}
 
                         <div
-                            className={`snackbar ${!this.state.snackbarOpen && 'hide'}`}>{`Manga Parsed: ${parsed.parsed} / ${parsed.count}`}</div>
+                            className={`snackbar ${!this.state.snackbarOpen && 'hide'}`}
+                        >
+                            {`Manga Parsed: ${parsed.parsed} / ${parsed.count}`}
+                        </div>
 
                         <Table selectable={false}>
                             <TableHeader displaySelectAll={false}
@@ -88,7 +93,7 @@ export default class HomePage extends Component {
                                     <TableHeaderColumn className="first-column">Name</TableHeaderColumn>
                                     <TableHeaderColumn className="second-column">Date</TableHeaderColumn>
                                     <TableHeaderColumn className="third-column">Seen</TableHeaderColumn>
-                                    <TableHeaderColumn className="fourth-column">Remove</TableHeaderColumn>
+                                    {!isMobileDevice() && <TableHeaderColumn className="fourth-column">Remove</TableHeaderColumn>}
                                 </TableRow>
                             </TableHeader>
                             <TableBody stripedRows={true}

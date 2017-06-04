@@ -1,6 +1,5 @@
 import React from "react";
 import {FlowRouter} from 'meteor/kadira:flow-router';
-import {BlazeLayout} from 'meteor/kadira:blaze-layout';
 import {mount} from "react-mounter";
 import MainLayout from "/imports/client/layouts/MainLayout"
 import HomeCont from "/imports/client/containers/HomeCont"
