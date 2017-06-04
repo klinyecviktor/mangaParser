@@ -74,8 +74,8 @@ export default class HomePage extends Component {
             <div className="home-container">
                 {!ready ? (<CircularProgress size={size} thickness={5} style={style}/>) : (
                     <div>
-                        <RaisedButton className="btn" label="Add manga" primary={true}
-                                      onClick={() => this.modalHandle(true)}/>
+                        {!isMobileDevice() && <RaisedButton className="btn" label="Add manga" primary={true}
+                                      onClick={() => this.modalHandle(true)}/>}
                         <RaisedButton className="btn" label="Refresh" primary={true} onClick={this.refresh}/>
 
                         {this.state.open && <MangaForm modalHandle={this.modalHandle}/>}
