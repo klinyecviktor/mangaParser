@@ -31,7 +31,7 @@ export default class HomePage extends Component {
     componentWillReceiveProps(nextProps) {
         const {parsed} = nextProps;
 
-        if (parsed && parsed.parsed === parsed.count && this.state.snackbarOpen)
+        if (parsed && !parsed.isParsing && this.state.snackbarOpen)
             setTimeout(() => this.setState({snackbarOpen: false}), 1500);
     }
 
